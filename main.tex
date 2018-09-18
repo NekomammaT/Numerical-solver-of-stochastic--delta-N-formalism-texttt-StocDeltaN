@@ -166,8 +166,8 @@ The corresponding Fokker-Planck (FP) eq. reads
 }
 with the Fokker-Planck operator $\calL_{\FP}$ defined by
 \bae{
-	\calL_{\FP}\cdot P=-\partial_{\phi^I}(D_{\phi}^IP)-\partial_{\pi_I}(D_{\pi I}P)+\frac{1}{2}\partial_{\phi^I\phi^J}(D_{\phi\phi}{}^{IJ}P)
-	+\partial_{\phi^I\pi_J}(D_{\phi\pi}{}^I{}_JP)+\frac{1}{2}\partial_{\pi_I\pi_J}(D_{\pi\pi IJ}P).
+	\calL_{\FP}\cdot P=-\partial_{\phi^I}(D_{\phi}^IP)-\partial_{\pi_I}(D_{\pi I}P)+\frac{1}{2}\partial_{\phi^I}\partial_{\phi^J}(D_{\phi\phi}{}^{IJ}P)
+	+\partial_{\phi^I}\partial_{\pi_J}(D_{\phi\pi}{}^I{}_JP)+\frac{1}{2}\partial_{\pi_I}\partial_{\pi_J}(D_{\pi\pi IJ}P).
 }
 The coefficients are
 \bae{
@@ -300,11 +300,11 @@ For $\calC_2$, one discretizes the right side of PDE as well:
 	&\simeq-\sum_{IJ}\left[D_{\phi\phi}{}^{IJ}\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{j+1}-v_{j-1}}{h_j+h_{j-1}} 
 	+2D_{\phi\pi}{}^I{}_J\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}
 	+D_{\pi\pi IJ}\frac{v_{\mathfrak{i}+1}-v_{\mathfrak{i}-1}}{h_\mathfrak{i}+h_{\mathfrak{i}-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}\right] \nonumber \\
-	&=:V.
+	&=:X.
 }
 Then PDE reads
 \bae{\label{eq: discrete PDE for g2}
-	\calC_2=\left.\frac{1}{C}(U+V)\right|_{u=\calC_2,\,v=\calM_1}.
+	\calC_2=\left.\frac{1}{C}(U+X)\right|_{u=\calC_2,\,v=\calM_1}.
 }
 
 Even though these equations are explicit for the considered site, they are still implicit as a whole system and have to be solved algebraically. 
@@ -349,7 +349,60 @@ with
 \bae{
 	f^I=-\Mpl^2\frac{V^I}{V}, \qquad g^I_a=\frac{1}{2\pi}\sqrt{\frac{V}{3\Mpl^2}}e^I_a.
 }
+Then the Fokker-Planck eq. is given by
+\bae{
+    \partial_NP=\calL_\FP\cdot P=-\partial_I(D^IP)+\frac{1}{2}\partial_I\partial_J(D^{IJ}P),
+}
+where the coefficients of these equations are related by
+\bae{
+    D^I=\bce{
+        \dps
+        f^I, & \text{It\^o} \\[10pt]
+        \dps
+        f^I+\frac{1}{2}g^J_a\partial_Jg^I_a, & \text{Stratonovich},
+    }
+    \qquad D^{IJ}=\frac{V}{12\pi^2\Mpl^2}G^{IJ}.
+}
+Similarly to the full phase-space case, the Vincent's PDE can be obtained as
+\bae{
+    \bce{
+        \dps
+        \calL_\FP^\dagger\cdot\calM_n=-n\calM_{n-1}, \\[10pt]
+        \dps
+        \calL_\FP^\dagger\cdot\calC_2=-D^{IJ}(\partial_I\calM_1)(\partial_J\calM_1),
+    }
+}
+with the adjoint FP operator
+\bae{
+    \calL_\FP^\dagger=D^I\partial_I+\frac{1}{2}D^{IJ}\partial_I\partial_J,
+}
+and the same boundary condition.
 
+Numerical discretization can be also done in analogy with the full phase-space formulation as
+\bae{
+    \calL_\FP^\dagger\cdot u\simeq Cu-U,
+}
+where
+\bae{
+    C=&-\sum_{i_+}\frac{D^I}{h_{i_+}}
+    +\sum_{j_-}\frac{D^J}{h_{j_--1}}
+    -\sum_I\frac{D^{II}}{h_ih_{i-1}}, \\
+    U=&-\sum_{i_+}D^I\frac{u_{i_++1}}{h_{i_+}}
+    +\sum_{j_-}D^J\frac{u_{j_--1}}{h_{j_--1}}
+    -\sum_ID^{II}\frac{u_{i+1}h_{i-1}+u_{i-1}h_i}{h_ih_{i-1}(h_i+h_{i-1})} \nonumber \\
+    &-\frac{1}{2}\sum_{I\neq J}D^{IJ}\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})},
+}
+and
+\bae{
+    -D^{IJ}(\partial_Iv)(\partial_Jv)
+    \simeq-\sum_{IJ}D^{IJ}\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}
+    \frac{v_{j+1}-v_{j-1}}{h_j+h_{j-1}}=:X,
+}
+giving the discret PDE
+\bae{
+    \calM_n=\left.\frac{1}{C}(\calM_{n-1}+U)\right|_{u=\calM_n},
+    \qquad \calC_2=\left.\frac{1}{C}(U+X)\right|_{u=\calC_2,v=\calM_1}.
+}
 
 
 
