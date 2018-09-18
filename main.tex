@@ -1,3 +1,4 @@
+
 \documentclass[aps, prd
 , preprint
 %, twocolumn
@@ -63,6 +64,7 @@
 \newcommand{\kdx}{\mathbf{k}\cdot\mathbf{x}}
 \newcommand{\FP}{\text{FP}}
 
+\newcommand{\calC}{\mathcal{C}}
 \newcommand{\calD}{\mathcal{D}}
 \newcommand{\scrD}{\mathscr{D}}
 \newcommand{\calg}{\mathcal{g}}
@@ -73,12 +75,14 @@
 \newcommand{\scrJ}{\mathscr{J}}
 \newcommand{\calL}{\mathcal{L}}
 \newcommand{\scrL}{\mathscr{L}}
+\newcommand{\calM}{\mathcal{M}}
 \newcommand{\calN}{\mathcal{N}}
 \newcommand{\calO}{\mathcal{O}}
 \newcommand{\scrO}{\mathscr{O}}
 \newcommand{\calP}{\mathcal{P}}
 \newcommand{\calR}{\mathcal{R}}
 \newcommand{\uR}{\text{R}}
+\newcommand{\calV}{\mathcal{V}}
 
 \newcommand{\bae}[1]{\begin{align} #1 \end{align}}
 \newcommand{\bce}[1]{\begin{cases} #1 \end{cases}}
@@ -126,11 +130,11 @@
 
 Let us consider the following form of the phase space Langevin eq.
 \bae{
-	\dd\phi^I=h_\phi^I\dd N+g^I_{Qa}\dd W_a, \qquad \dd\pi_I=h_{\pi I}\dd N+g_{PIa}\dd W_a.
+	\dd\phi^I=f_\phi^I\dd N+g^I_{Qa}\dd W_a, \qquad \dd\pi_I=f_{\pi I}\dd N+g_{PIa}\dd W_a.
 }
 For a standard choice, the deterministic coefficients are given by
 \bae{
-	h_\phi^I=G^{IJ}\frac{\pi_J}{H}, \qquad h_{\pi I}=-3\pi_I-\frac{V_I}{H}+\frac{1}{H}\Gamma^K_{IJ}G^{JL}\pi_K\pi_L,
+	f_\phi^I=G^{IJ}\frac{\pi_J}{H}, \qquad f_{\pi I}=-3\pi_I-\frac{V_I}{H}+\frac{1}{H}\Gamma^K_{IJ}G^{JL}\pi_K\pi_L,
 }
 with the Hubble parameter calculated by the Friedmann eq.
 \bae{
@@ -170,15 +174,15 @@ The coefficients are
 	\text{It\^o:}& \qquad
 	\bce{
 		\dps
-		D_\phi^I=h_\phi^I, \\
+		D_\phi^I=f_\phi^I, \\
 		\dps
-		D_{\pi I}=h_{\pi I},
+		D_{\pi I}=f_{\pi I},
 	} \\
 	\text{Stratonovich:}& \qquad
 	\bce{
 		\dps
-		D_\phi^I=h_\phi^I+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g^I_{Qa}, \\
-		D_{\pi I}=h_{\pi I}+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g_{PIa}, 
+		D_\phi^I=f_\phi^I+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g^I_{Qa}, \\
+		D_{\pi I}=f_{\pi I}+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g_{PIa}, 
 	}
 }
 and
@@ -192,14 +196,14 @@ For this FP eq., the Vincent's partial differential equation (PDE) is given by
 \bae{
 	\bce{
 		\dps
-		\calL_\FP^\dagger\cdot f_n=-nf_{n-1}, \\ 
+		\calL_\FP^\dagger\cdot \calM_n=-n\calM_{n-1}, \\ 
 		\dps
-		\calL_\FP^\dagger\cdot g_2=-D_{\phi\phi}{}^{IJ}(\partial_{\phi^I}f_1)(\partial_{\phi^J}f_1)
-		-2D_{\phi\pi}{}^I{}_J(\partial_{\phi^I}f_1)(\partial_{\pi_J}f_1)-D_{\pi\pi IJ}(\partial_{\pi_I}f_1)(\partial_{\pi_J}f_1),
+		\calL_\FP^\dagger\cdot \calC_2=-D_{\phi\phi}{}^{IJ}(\partial_{\phi^I}\calM_1)(\partial_{\phi^J}\calM_1)
+		-2D_{\phi\pi}{}^I{}_J(\partial_{\phi^I}\calM_1)(\partial_{\pi_J}\calM_1)-D_{\pi\pi IJ}(\partial_{\pi_I}\calM_1)(\partial_{\pi_J}\calM_1),
 	}
 }
-with $f_0=1$ and the absorbing boundary condition $f_n|_\text{boundary}=g_2|_\text{boundary}=0,\,(n\ge1)$. 
-Here $f_n(\phi,\pi)=\braket{\calN^n}(\phi,\pi)$, $g_2(\phi,\pi)=\braket{\delta\calN^2}(\phi,\pi)$,
+with $\calM_0=1$ and the absorbing boundary condition $\calM_n|_\text{boundary}=\calC_2|_\text{boundary}=0,\,(n\ge1)$. 
+Here $\calM_n(\phi,\pi)=\braket{\calN^n}(\phi,\pi)$, $\calC_2(\phi,\pi)=\braket{\delta\calN^2}(\phi,\pi)$,
 and $\calL^\dagger_\FP$ denotes the adjoint FP operator 
 \bae{
 	\calL^\dagger_\FP=D_\phi^I\partial_{\phi^I}+D_{\pi I}\partial_{\pi_I}+\frac{1}{2}D_{\phi\phi}{}^{IJ}\partial_{\phi^I}\partial_{\phi^J}+D_{\phi\pi}{}^I{}_J\partial_{\phi^I}\partial_{\pi_J}
@@ -221,7 +225,7 @@ In \texttt{JacobiPDE.hpp}, the Jacobi method is used, where the site value is up
 First let us specify the boundary condition. To make use of the $\delta N$ formalism, the surface of the end of inflation should be given by the constant energy slice.
 Therefore, with a certain threshold energy $\rho_c$, the boundary condition is set as
 \bae{
-	f_{n(\ge1)}(\phi,\pi)=g_2(\phi,\pi)=0, \qquad \text{where $\rho(\phi,\pi)=\rho_c$ (indicated by the blue line in Fig.~\ref{fig: lattice})}.
+	\calM_{n(\ge1)}(\phi,\pi)=\calC_2(\phi,\pi)=0, \qquad \text{where $\rho(\phi,\pi)=\rho_c$ (indicated by the blue line in Fig.~\ref{fig: lattice})}.
 }
 In the discretized lattice case, the site value where $\rho\le\rho_c$ (the blue-shaded region in Fig.~\ref{fig: lattice}) is fixed to zero and not updated during the calculation.
 
@@ -285,11 +289,46 @@ Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (
 	{(h_\mathfrak{i}+h_{\mathfrak{i}-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}\right)\right] \nonumber \\
 	=:&\,Cu-U.
 }
+Therefore PDE for $\calM_n$ reads
+\bae{\label{eq: discrete PDE for fn}
+	\calM_n=\left.\frac{1}{C}(\calM_{n-1}+U)\right|_{u=\calM_n}.
+}
+Note that the right side is calculated only by the nearest sites but irrespective of the considered site itself, that is, this equation is explicit.
+For $\calC_2$, one discretizes the right side of PDE as well:
+\bae{
+	&\hspace{-20pt}-D_{\phi\phi}{}^{IJ}(\partial_{\phi^I}v)(\partial_{\phi^J}v)-2D_{\phi\pi}{}^I{}_J(\partial_{\phi^I}v)(\partial_{\pi_J}v)-D_{\pi\pi IJ}(\partial_{\pi_I}v)(\partial_{\pi_J}v) \nonumber \\
+	&\simeq-\sum_{IJ}\left[D_{\phi\phi}{}^{IJ}\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{j+1}-v_{j-1}}{h_j+h_{j-1}} 
+	+2D_{\phi\pi}{}^I{}_J\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}
+	+D_{\pi\pi IJ}\frac{v_{\mathfrak{i}+1}-v_{\mathfrak{i}-1}}{h_\mathfrak{i}+h_{\mathfrak{i}-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}\right] \nonumber \\
+	&=:V.
+}
+Then PDE reads
+\bae{\label{eq: discrete PDE for g2}
+	\calC_2=\left.\frac{1}{C}(U+V)\right|_{u=\calC_2,\,v=\calM_1}.
+}
+
+Even though these equations are explicit for the considered site, they are still implicit as a whole system and have to be solved algebraically. 
+Rather than algebraic transformations, in the Jacobi method, the initial value for each site is given randomly (or maybe given by some analytic form) and then the site value
+is repeatedly updated with use of the previous value by following PDE~(\ref{eq: discrete PDE for fn}) or (\ref{eq: discrete PDE for g2}) to find a converged solution.
+To estimate the convergence, the following error function is often used.
+\bae{
+	\text{err}=\frac{|\Delta u|}{|u|},
+}
+where $\Delta u$ represents the difference between the updated value and the previous one and the absolute value symbol denotes the norm, that is, the square-root of the sum of squares.
 
 
 
 
 
+\subsubsection{SRK32}
+
+For a numerical solver of stochastic differential equations, we use the R\"o\ss ler's 3-stage order ($2.0,1.0$) strong stochastic Runge-Kutta~\cite{rossler2010runge}.
+
+
+
+
+
+\subsubsection{StocDeltaN}
 
 
 \subsection{Adiabatic-entropic decomposition}\label{sec: Adiabatic-entropic decomposition}
@@ -298,6 +337,18 @@ Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (
 
 \section{Configuration space formulation}
 
+Realistically, reducing the phase-space dimension might be the most crucial task from the view point of the computational cost in some cases 
+even at the expense of accuracy to some extent. The slow-roll approximation can halve the physical d.o.f. and often gives results practically accurate enough.
+In this section, eliminating the d.o.f. of momenta by the slow-roll approximation, we give the configuration space formulation of stochastic-$\delta N$.
+
+In the slow-roll approximation, the Langevin eq. reads
+\bae{
+	\dd\phi^I=f^I\dd N+g^I_a\dd W_a,
+}
+with
+\bae{
+	f^I=-\Mpl^2\frac{V^I}{V}, \qquad g^I_a=\frac{1}{2\pi}\sqrt{\frac{V}{3\Mpl^2}}e^I_a.
+}
 
 
 
@@ -317,5 +368,5 @@ Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (
 
 
 
-%\bibliography{}
+\bibliography{main}
 \end{document}
