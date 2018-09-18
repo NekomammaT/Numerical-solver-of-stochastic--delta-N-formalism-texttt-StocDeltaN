@@ -1,0 +1,321 @@
+\documentclass[aps, prd
+, preprint
+%, twocolumn
+, nofootinbib 
+%, notitlepage
+%, superscriptaddress
+, longbibliography
+]{revtex4-1}
+\usepackage{graphicx}
+\usepackage[caption=false]{subfig}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{listings}
+\usepackage{cases}
+\usepackage{comment}
+\usepackage{soul}
+\usepackage{cancel}
+\usepackage{cases}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{longtable}
+\usepackage[normalem]{ulem}
+\usepackage[colorlinks=true
+,urlcolor=blue
+,anchorcolor=blue
+,citecolor=blue
+,filecolor=blue
+,linkcolor=blue
+,menucolor=blue
+%,pagecolor=blue
+,linktocpage=true
+,pdfproducer=medialab
+,pdfa=true
+]{hyperref}
+
+%\usepackage{mathpazo}
+%\usepackage[no-math]{fontspec}
+%\setmainfont{Palatino}
+%\setsansfont{Optima}
+
+\newcommand{\dif}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\pdif}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\var}[2]{\frac{\delta #1}{\delta #2}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathscr{D}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\Mpl}{M_\text{Pl}}
+\newcommand{\ns}{n_{{}_\mathrm{S}}}
+\newcommand{\cs}{c_{{}_\mathrm{S}}}
+\newcommand{\IR}{\text{IR}}
+\newcommand{\UV}{\text{UV}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\newcommand{\dk}{\frac{\dd^3k}{(2\pi)^3}}
+\newcommand{\bbalpha}{{\alpha\!\!\!\alpha}}
+\newcommand{\dps}{\displaystyle}
+\newcommand{\SIA}{S_\text{IA}}
+\newcommand{\eff}{\text{eff}}
+\newcommand{\kdx}{\mathbf{k}\cdot\mathbf{x}}
+\newcommand{\FP}{\text{FP}}
+
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\scrD}{\mathscr{D}}
+\newcommand{\calg}{\mathcal{g}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\scrH}{\mathscr{H}}
+\newcommand{\uI}{\text{I}}
+\newcommand{\calJ}{\mathcal{J}}
+\newcommand{\scrJ}{\mathscr{J}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\scrL}{\mathscr{L}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\scrO}{\mathscr{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\uR}{\text{R}}
+
+\newcommand{\bae}[1]{\begin{align} #1 \end{align}}
+\newcommand{\bce}[1]{\begin{cases} #1 \end{cases}}
+\newcommand{\bfe}[4]{
+\begin{figure} 
+	\centering
+	\includegraphics[#1]{#2}
+	\caption{#3}
+	\label{#4}
+\end{figure}}
+\newcommand{\bpme}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+
+\newcommand{\Red}[1]{\textcolor{red}{\sffamily #1}}
+\newcommand{\Mag}[1]{\textcolor{magenta}{\sffamily #1}}
+\newcommand{\Blue}[1]{\textcolor{blue}{\sffamily #1}}
+\newcommand{\mathblue}[1]{\textcolor{blue}{#1}}
+
+\allowdisplaybreaks[4]
+
+
+
+\begin{document}
+\title{Numerical solver of stochastic-$\delta N$ formalism: \texttt{StocDeltaN}}
+\date{\today}
+
+\author{Yuichiro Tada}
+\email{tada.yuichiro@e.mbox.nagoya-u.ac.jp}
+\affiliation{Department of Physics, Nagoya University, Nagoya 464-8602, Japan}
+\affiliation{Institut d'Astrophysique de Paris, GReCO, UMR 7095 du CNRS et Sorbonne Universit\'e, 
+98bis boulevard Arago, 75014 Paris, France}
+
+
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+%\tableofcontents
+
+
+
+
+\section{Phase space formulation}
+
+\subsection{Basic equations}
+
+Let us consider the following form of the phase space Langevin eq.
+\bae{
+	\dd\phi^I=h_\phi^I\dd N+g^I_{Qa}\dd W_a, \qquad \dd\pi_I=h_{\pi I}\dd N+g_{PIa}\dd W_a.
+}
+For a standard choice, the deterministic coefficients are given by
+\bae{
+	h_\phi^I=G^{IJ}\frac{\pi_J}{H}, \qquad h_{\pi I}=-3\pi_I-\frac{V_I}{H}+\frac{1}{H}\Gamma^K_{IJ}G^{JL}\pi_K\pi_L,
+}
+with the Hubble parameter calculated by the Friedmann eq.
+\bae{
+	3\Mpl^2H^2=\frac{1}{2}G^{IJ}\pi_I\pi_J+V.
+}
+The noise coefficients are determined by the power spectra of linear perturbations. To see the power spectra, it is better to introduce the covariant momenta defined by
+\bae{
+	\tilde{P}_I=P_I-\Gamma^K_{IJ}\pi_KQ^J.
+}
+At the leading order in the slow-roll approximation, the correlators between $Q$ and $\tilde{P}$ on the superhorizon scale read
+\bae{
+	\calP_{QQ}{}^{IJ}\simeq\left(\frac{H}{2\pi}\right)^2G^{IJ}, \qquad \calP_{Q\tilde{P}}{}^I{}_J\simeq\calP_{\tilde{P}\tilde{P}IJ}\simeq0,
+}
+and therefore those between $Q$ and $P$ are given by
+\bae{
+	\calP_{QQ}{}^{IJ}\simeq\left(\frac{H}{2\pi}\right)^2G^{IJ}, \qquad \calP_{QP}{}^I{}_J\simeq\Gamma^K_{JL}\pi_K\calP_{QQ}{}^{IL},
+	\qquad \calP_{PPIJ}\simeq\Gamma^K_{IL}\Gamma^M_{JN}\pi_K\pi_M\calP_{QQ}{}^{LN}.
+}
+The noise coefficients are the square-root of these correlators as
+\bae{
+	g^I_{Qa}\simeq\frac{H}{2\pi}e^I_a, \qquad g_{PIa}\simeq\Gamma^K_{IJ}\pi_Kg^J_{Qa},
+}
+where $e^I_a$ is a certain choice of the vielbein $e^I_ae^J_a=G^{IJ}$. If one takes account of the mass correction for noise amplitudes,
+it would be better to give the vielbein by the adiabatic-entropic decomposition described in Sec.~\ref{sec: Adiabatic-entropic decomposition}.
+
+The corresponding Fokker-Planck (FP) eq. reads
+\bae{
+	\partial_NP=\calL_{\FP}\cdot P,
+}
+with the Fokker-Planck operator $\calL_{\FP}$ defined by
+\bae{
+	\calL_{\FP}\cdot P=-\partial_{\phi^I}(D_{\phi}^IP)-\partial_{\pi_I}(D_{\pi I}P)+\frac{1}{2}\partial_{\phi^I\phi^J}(D_{\phi\phi}{}^{IJ}P)
+	+\partial_{\phi^I\pi_J}(D_{\phi\pi}{}^I{}_JP)+\frac{1}{2}\partial_{\pi_I\pi_J}(D_{\pi\pi IJ}P).
+}
+The coefficients are
+\bae{
+	\text{It\^o:}& \qquad
+	\bce{
+		\dps
+		D_\phi^I=h_\phi^I, \\
+		\dps
+		D_{\pi I}=h_{\pi I},
+	} \\
+	\text{Stratonovich:}& \qquad
+	\bce{
+		\dps
+		D_\phi^I=h_\phi^I+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g^I_{Qa}, \\
+		D_{\pi I}=h_{\pi I}+\frac{1}{2}(g^J_{Qa}\partial_{\phi^J}+g_{PJa}\partial_{\pi J})g_{PIa}, 
+	}
+}
+and
+\bae{
+	D_{\phi\phi}{}^{IJ}=g^I_{Qa}g^J_{Qa}=\calP_{QQ}{}^{IJ}, \qquad D_{\phi\pi}{}^I{}_J=g^I_{Qa}g_{PJa}=\calP_{QP}{}^I{}_J, \qquad 
+	D_{\pi\pi IJ}=g_{PIa}g_{PJa}=\calP_{PPIJ},
+}
+both for It\^o and Stratonovich integrals.
+
+For this FP eq., the Vincent's partial differential equation (PDE) is given by
+\bae{
+	\bce{
+		\dps
+		\calL_\FP^\dagger\cdot f_n=-nf_{n-1}, \\ 
+		\dps
+		\calL_\FP^\dagger\cdot g_2=-D_{\phi\phi}{}^{IJ}(\partial_{\phi^I}f_1)(\partial_{\phi^J}f_1)
+		-2D_{\phi\pi}{}^I{}_J(\partial_{\phi^I}f_1)(\partial_{\pi_J}f_1)-D_{\pi\pi IJ}(\partial_{\pi_I}f_1)(\partial_{\pi_J}f_1),
+	}
+}
+with $f_0=1$ and the absorbing boundary condition $f_n|_\text{boundary}=g_2|_\text{boundary}=0,\,(n\ge1)$. 
+Here $f_n(\phi,\pi)=\braket{\calN^n}(\phi,\pi)$, $g_2(\phi,\pi)=\braket{\delta\calN^2}(\phi,\pi)$,
+and $\calL^\dagger_\FP$ denotes the adjoint FP operator 
+\bae{
+	\calL^\dagger_\FP=D_\phi^I\partial_{\phi^I}+D_{\pi I}\partial_{\pi_I}+\frac{1}{2}D_{\phi\phi}{}^{IJ}\partial_{\phi^I}\partial_{\phi^J}+D_{\phi\pi}{}^I{}_J\partial_{\phi^I}\partial_{\pi_J}
+	+\frac{1}{2}D_{\pi\pi IJ}\partial_{\pi_I}\partial_{\pi_J}.
+}
+
+
+
+\subsection{Numerical implementation}
+
+\subsubsection{JacobiPDE}
+
+\bfe{width=\hsize}{figs/lattice.pdf}{}{fig: lattice}
+
+In this subsubsection, we describe the numerical algorithm to solve PDE implemented in \texttt{JacobiPDE.hpp}.
+To solve PDE numerically, one divides the integration region $\Omega$ into the lattice as schematically indicated in Fig.~\ref{fig: lattice}.
+In \texttt{JacobiPDE.hpp}, the Jacobi method is used, where the site value is updated by the nearest eight sites for e.g. 2-dim. case and its own self.
+
+First let us specify the boundary condition. To make use of the $\delta N$ formalism, the surface of the end of inflation should be given by the constant energy slice.
+Therefore, with a certain threshold energy $\rho_c$, the boundary condition is set as
+\bae{
+	f_{n(\ge1)}(\phi,\pi)=g_2(\phi,\pi)=0, \qquad \text{where $\rho(\phi,\pi)=\rho_c$ (indicated by the blue line in Fig.~\ref{fig: lattice})}.
+}
+In the discretized lattice case, the site value where $\rho\le\rho_c$ (the blue-shaded region in Fig.~\ref{fig: lattice}) is fixed to zero and not updated during the calculation.
+
+For a hilltop-type inflation model, the integration region $\Omega$ can be surrounded by this end surface $\rho_c$ and the above boundary condition is sufficient.
+However, for e.g. a chaotic-type model, the slow-roll inflationary region in general has boundaries between eternal inflationary regions and then the integration region 
+$\Omega$ cannot be completely surrounded by absorbing boundaries like as an example Fig.~\ref{fig: lattice}.
+In that case, we impose the reflecting condition on these not-EoI (end of inflation) boundaries. 
+The Jacobi method requires the nearest sites for each point, so we introduce the imaginary sites one-step outside of $\Omega$.
+The field values of these points are determined by those of the reflecting positions which are inside $\Omega$.
+The schematic image is indicated in Fig.~\ref{fig: lattice}. Practically, these not-EoI boundaries should be sufficiently far from the interested region
+and the boundary condition should not affect the calculation results.
+
+Then we move to the core of the Jacobi method. We label the site point in the $\phi^I$ direction by the small character $i$ of its index $I$ 
+(or its fraktur $\mathfrak{i}$ for $\pi_I$). Also only the relevant indices will be explicitly expressed.
+Then the first order derivative can be given by one of the following discretizations at leading order.
+\bae{
+	\partial_{\phi^I}u|_i\simeq\frac{u_{i+1}-u}{h_i}
+	\simeq\frac{u-u_{i-1}}{h_{i-1}}
+	\simeq\frac{u_{i+1}-u_{i-1}}{h_i+h_{i-1}}.
+}
+The second derivatives are, depending on if the direction is the same or not, respectively given by
+\bae{
+	 \bce{
+	 	\dps
+		\partial_{\phi^I}^2u|_i\simeq2\frac{u_{i+1}h_{i-1}+u_{i-1}h_i-u(h_i+h_{i-1})}{h_ih_{i-1}(h_i+h_{i-1})}, \\
+		\dps
+		\partial_{\phi^I}\partial_{\phi^J}u|_{ij}\simeq\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})}.
+	}
+}
+Regarding the discretization of the first derivative, one recalls that the physically fixed boundary is the EoI surface and field values should be calculated 
+from this surface. Therefore the discretization is chosen so that the lower-energy point is used, that is, $u_{i+1}$ if $D^I_\phi>0$ and otherwise $u_{i-1}$ is selected.
+Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (and similarly for $\pi$). Then the adjoint FP operator is discretized as
+\bae{
+	&\hspace{-20pt}\calL_\FP^\dagger\cdot u \nonumber \\
+	\simeq&\sum_{i_+}D_\phi^I\frac{u_{i_++1}-u}{h_{i_+}}+\sum_{j_-}D_\phi^J\frac{u-u_{j_--1}}{h_{j_--1}}
+	+\sum_{\mathfrak{i}_+}D_{\pi I}\frac{u_{\mathfrak{i}_++1}-u}{h_{\mathfrak{i}_+}}
+	+\sum_{\mathfrak{j}_-}D_{\pi J}\frac{u-u_{\mathfrak{j}_--1}}{h_{\mathfrak{j}_--1}} \nonumber \\
+	&+\sum_I\left(D_{\phi\phi}{}^{II}\frac{u_{i+1}h_{i-1}+u_{i-1}h_i-u(h_i+h_{i-1})}{h_ih_{i-1}(h_i+h_{i-1})}
+	+D_{\pi\pi II}\frac{u_{\mathfrak{i}+1}h_{\mathfrak{i}-1}+u_{\mathfrak{i}-1}h_\mathfrak{i}-u(h_\mathfrak{i}+h_{\mathfrak{i}-1})}
+	{h_\mathfrak{i}h_{\mathfrak{i}-1}(h_\mathfrak{i}+h_{\mathfrak{i}-1})}\right) \nonumber \\
+	&+\sum_{I\neq J}\left(\frac{1}{2}D_{\phi\phi}{}^{IJ}\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})}
+	+D_{\phi\pi}{}^I{}_J\frac{u_{i+1,\mathfrak{j}+1}-u_{i+1,\mathfrak{j}-1}-u_{i-1,\mathfrak{j}+1}+u_{i-1,\mathfrak{j}-1}}{(h_i+h_{i-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}
+	\right.\nonumber \\
+	&\hspace{20pt}\left.+\frac{1}{2}D_{\pi\pi IJ}
+	\frac{u_{\mathfrak{i}+1,\mathfrak{j}+1}-u_{\mathfrak{i}+1,\mathfrak{j}-1}-u_{\mathfrak{i}-1,\mathfrak{j}+1}+u_{\mathfrak{i}-1,\mathfrak{j}-1}}
+	{(h_\mathfrak{i}+h_{\mathfrak{i}-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}\right) \nonumber \\
+	=&\left[-\sum_{i_+}\frac{D_\phi^I}{h_{i_+}}+\sum_{j_-}\frac{D_\phi^J}{h_{j_--1}}
+	-\sum_{\mathfrak{i}_+}\frac{D_{\pi I}}{h_{\mathfrak{i}_+}}+\sum_{\mathfrak{j}_-}\frac{D_{\pi J}}{h_{\mathfrak{j}_--1}}
+	-\sum_I\left(\frac{D_{\phi\phi}{}^{II}}{h_ih_{i-1}}+\frac{D_{\pi\pi II}}{h_\mathfrak{i}h_{\mathfrak{i}-1}}\right)\right]u \nonumber \\
+	&-\left[-\sum_{i_+}D_\phi^I\frac{u_{i_++1}}{h_{i_+}}+\sum_{j_-}D_\phi^J\frac{u_{j_--1}}{h_{j_--1}}
+	-\sum_{\mathfrak{i}_+}D_{\pi I}\frac{u_{\mathfrak{i}_++1}}{h_{\mathfrak{i}_+}}
+	+\sum_{\mathfrak{j}_-}D_{\pi J}\frac{u_{\mathfrak{j}_--1}}{h_{\mathfrak{j}_--1}} \right. \nonumber \\
+	&\hspace{20pt}-\sum_I\left(D_{\phi\phi}{}^{II}\frac{u_{i+1}h_{i-1}+u_{i-1}h_i}{h_ih_{i-1}(h_i+h_{i-1})}
+	+D_{\pi\pi II}\frac{u_{\mathfrak{i}+1}h_{\mathfrak{i}-1}+u_{\mathfrak{i}-1}h_\mathfrak{i}}
+	{h_\mathfrak{i}h_{\mathfrak{i}-1}(h_\mathfrak{i}+h_{\mathfrak{i}-1})}\right) \nonumber \\
+	&\hspace{20pt}-\sum_{I\neq J}\left(\frac{1}{2}D_{\phi\phi}{}^{IJ}\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})} \right. \nonumber \\
+	&\hspace{40pt}+D_{\phi\pi}{}^I{}_J\frac{u_{i+1,\mathfrak{j}+1}-u_{i+1,\mathfrak{j}-1}-u_{i-1,\mathfrak{j}+1}+u_{i-1,\mathfrak{j}-1}}{(h_i+h_{i-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}
+	\nonumber \\
+	&\hspace{40pt}\left.\left.+\frac{1}{2}D_{\pi\pi IJ}
+	\frac{u_{\mathfrak{i}+1,\mathfrak{j}+1}-u_{\mathfrak{i}+1,\mathfrak{j}-1}-u_{\mathfrak{i}-1,\mathfrak{j}+1}+u_{\mathfrak{i}-1,\mathfrak{j}-1}}
+	{(h_\mathfrak{i}+h_{\mathfrak{i}-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}\right)\right] \nonumber \\
+	=:&\,Cu-U.
+}
+
+
+
+
+
+
+
+\subsection{Adiabatic-entropic decomposition}\label{sec: Adiabatic-entropic decomposition}
+
+
+
+\section{Configuration space formulation}
+
+
+
+
+
+
+%\acknowledgments
+
+
+
+
+
+%\appendix
+
+
+
+
+
+
+
+%\bibliography{}
+\end{document}
