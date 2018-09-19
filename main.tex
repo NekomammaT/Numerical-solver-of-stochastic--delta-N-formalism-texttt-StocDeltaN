@@ -111,9 +111,6 @@
 \author{Yuichiro Tada}
 \email{tada.yuichiro@e.mbox.nagoya-u.ac.jp}
 \affiliation{Department of Physics, Nagoya University, Nagoya 464-8602, Japan}
-\affiliation{Institut d'Astrophysique de Paris, GReCO, UMR 7095 du CNRS et Sorbonne Universit\'e, 
-98bis boulevard Arago, 75014 Paris, France}
-
 
 \begin{abstract}
 \end{abstract}
@@ -330,6 +327,15 @@ For a numerical solver of stochastic differential equations, we use the R\"o\ss 
 
 \subsubsection{StocDeltaN}
 
+\begin{itemize}
+\item Explanation of the stochastic-$\delta N$ formalism.
+\item User's manual for \texttt{StocDeltaN.hpp}.
+\end{itemize}
+
+
+
+\subsection{Examples}
+
 
 \subsection{Adiabatic-entropic decomposition}\label{sec: Adiabatic-entropic decomposition}
 
@@ -398,11 +404,108 @@ and
     \simeq-\sum_{IJ}D^{IJ}\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}
     \frac{v_{j+1}-v_{j-1}}{h_j+h_{j-1}}=:X,
 }
-giving the discret PDE
+giving the discrete PDE
 \bae{
     \calM_n=\left.\frac{1}{C}(\calM_{n-1}+U)\right|_{u=\calM_n},
     \qquad \calC_2=\left.\frac{1}{C}(U+X)\right|_{u=\calC_2,v=\calM_1}.
 }
+
+
+
+\subsection{Examples}
+
+\subsubsection{hilltop model}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{cc}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/hilltop/N_conf.pdf}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/hilltop/dN2_conf.pdf}
+		\end{minipage}
+	\end{tabular} \\[10pt]
+	\includegraphics[width=0.5\hsize]{figs/hilltop/Pzeta_conf.pdf}
+	\caption{}
+	\label{figs: hilltop_conf}
+\end{figure}
+
+
+\subsubsection{inflection model}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{cc}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/inflection/N_conf.pdf}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/inflection/dN2_conf.pdf}
+		\end{minipage}
+	\end{tabular} \\[10pt]
+	\includegraphics[width=0.5\hsize]{figs/inflection/Pzeta_conf.pdf}
+	\caption{}
+	\label{figs: inflection_conf}
+\end{figure}
+
+
+
+\subsubsection{double mass-term model}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{cc}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/double_chaotic/N_conf.pdf}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/double_chaotic/dN2_conf.pdf}
+		\end{minipage}
+	\end{tabular} \\[10pt]
+	\includegraphics[width=0.5\hsize]{figs/double_chaotic/Pzeta_conf.pdf}
+	\caption{}
+	\label{figs: double_chaotic_conf}
+\end{figure}
+
+As a first simple example of multi-field models, let us here consider the double mass-term model whose potential is given by
+\bae{
+	V=\frac{1}{2}M^2\phi^2+\frac{1}{2}m^2\psi^2, \qquad M=9m=10^{-5}\Mpl,
+}
+with the canonical field-space metric $G_{IJ}=\diag(1,1)$. The result is shown in Fig.~\ref{figs: double_chaotic_conf}.
+In this setup, the stochasticity of the considered region is small and the stochastic-$\delta N$ formalism well reproduces the results of the linear perturbation theory 
+except for slight differences around the turning point expected to be due to the slow-roll approximation.
+
+
+
+\subsubsection{hybrid model}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{cc}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/hybrid/N_conf.pdf}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\centering
+			\includegraphics[width=0.9\hsize]{figs/hybrid/dN2_conf.pdf}
+		\end{minipage}
+	\end{tabular} \\[10pt]
+	\includegraphics[width=0.5\hsize]{figs/hybrid/Pzeta_conf.pdf}
+	\caption{}
+	\label{figs: hybrid_conf}
+\end{figure}
+
+
+\subsubsection{GeoDesI}
+
 
 
 
