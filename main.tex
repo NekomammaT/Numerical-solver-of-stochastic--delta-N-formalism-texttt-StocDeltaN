@@ -1,3 +1,4 @@
+% !TEX TS-program = xelatex%
 
 \documentclass[aps, prd
 , preprint
@@ -63,10 +64,12 @@
 \newcommand{\eff}{\text{eff}}
 \newcommand{\kdx}{\mathbf{k}\cdot\mathbf{x}}
 \newcommand{\FP}{\text{FP}}
+\newcommand{\cl}{\text{cl}}
 
 \newcommand{\calC}{\mathcal{C}}
 \newcommand{\calD}{\mathcal{D}}
 \newcommand{\scrD}{\mathscr{D}}
+\newcommand{\uf}{\text{f}}
 \newcommand{\calg}{\mathcal{g}}
 \newcommand{\calH}{\mathcal{H}}
 \newcommand{\scrH}{\mathscr{H}}
@@ -429,9 +432,30 @@ giving the discrete PDE
 		\end{minipage}
 	\end{tabular} \\[10pt]
 	\includegraphics[width=0.5\hsize]{figs/hilltop/Pzeta_conf.pdf}
-	\caption{}
+	\caption{Our numerical results of $\braket{\calN}=\calM_1$, $\braket{\delta\calN^2}=\calC_2$, and $\calP_\zeta=\dd\braket{\delta\calN^2}/\dd\braket{\calN}$ 
+	for the hilltop model~(\ref{eq: hilltop V}) are shown by blue thick lines. The black thin line}
 	\label{figs: hilltop_conf}
 \end{figure}
+
+Let us first consider the hilltop model which is already studied by Vincent's original paper~\cite{Vennin:2015hra} and a good example to see the stochastic effect.
+The potential is given by
+\bae{\label{eq: hilltop V}
+	V=\Lambda^4\left[1-\left(\frac{\phi}{\mu}\right)^2\right], \qquad \Lambda=10^{-2}\Mpl, \qquad \mu=20\Mpl.
+}
+The results are shown in Fig.~\ref{figs: hilltop_conf}. In single-field models, the Vincent's PDE reduces to ordinary differential equations (ODE) and at least $\calM_1$ can be solved 
+easily even in \texttt{Mathematica} ($\calC_2$ requires the result of $\calM_1$ and is much heavier), then we compare \texttt{Mathematica}'s result with that of our numerical code,
+showing they are consistent. 
+When the stochasticity parameter $\eta_\cl=\frac{1}{24\pi^2\Mpl^4}\left|\frac{V^{\prime\prime}V^2}{{V^\prime}^2}\right|$ is large, 
+the stochastic sweeping effect reduces both the mean e-folds and its perturbation from the classical slow-roll predictions given by
+\bae{
+	N_\cl=\int^\phi_{\phi_\uf}\frac{\dd\phi^\prime}{\Mpl}\frac{1}{\sqrt{2\epsilon_V}}, \qquad \calP_\zeta=\frac{1}{24\pi^2\Mpl^4}{V}{\epsilon_V}, 
+	\qquad \epsilon_V=\frac{\Mpl^2}{2}\left(\frac{V^\prime}{V}\right)^2.
+}
+In particular, the results show that the mean e-folds cannot exceed around 2500 by the sweeping effect and then the power spectrum rapidly reduces around that scale 
+(though the curvature perturbations largely exceed unity around this scale and the validity of the stochastic-$\delta N$ formalism might be doubtful).
+
+
+
 
 
 \subsubsection{inflection model}
@@ -479,7 +503,7 @@ As a first simple example of multi-field models, let us here consider the double
 	V=\frac{1}{2}M^2\phi^2+\frac{1}{2}m^2\psi^2, \qquad M=9m=10^{-5}\Mpl,
 }
 with the canonical field-space metric $G_{IJ}=\diag(1,1)$. The result is shown in Fig.~\ref{figs: double_chaotic_conf}.
-In this setup, the stochasticity of the considered region is small and the stochastic-$\delta N$ formalism well reproduces the results of the linear perturbation theory 
+In this setup, the stochasticity of the considered region is small and the stochastic-$\delta N$ formalism well reproduces the results of the linear perturbation (Mukhanov-Sasaki) theory 
 except for slight differences around the turning point expected to be due to the slow-roll approximation.
 
 
