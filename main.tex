@@ -1,4 +1,4 @@
-% !TEX TS-program = xelatex%
+% !TEX TS-program = xelatex
 
 \documentclass[aps, prd
 , preprint
@@ -37,10 +37,10 @@
 ,pdfa=true
 ]{hyperref}
 
-%\usepackage{mathpazo}
-%\usepackage[no-math]{fontspec}
-%\setmainfont{Palatino}
-%\setsansfont{Optima}
+\usepackage{mathpazo}
+\usepackage[no-math]{fontspec}
+\setmainfont{Palatino}
+\setsansfont{Optima}
 
 \newcommand{\dif}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 \newcommand{\pdif}[2]{\frac{\partial #1}{\partial #2}}
@@ -74,6 +74,7 @@
 \newcommand{\calH}{\mathcal{H}}
 \newcommand{\scrH}{\mathscr{H}}
 \newcommand{\uI}{\text{I}}
+\newcommand{\ui}{\text{i}}
 \newcommand{\calJ}{\mathcal{J}}
 \newcommand{\scrJ}{\mathscr{J}}
 \newcommand{\calL}{\mathcal{L}}
@@ -266,9 +267,8 @@ Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (
 	&+\sum_I\left(D_{\phi\phi}{}^{II}\frac{u_{i+1}h_{i-1}+u_{i-1}h_i-u(h_i+h_{i-1})}{h_ih_{i-1}(h_i+h_{i-1})}
 	+D_{\pi\pi II}\frac{u_{\mathfrak{i}+1}h_{\mathfrak{i}-1}+u_{\mathfrak{i}-1}h_\mathfrak{i}-u(h_\mathfrak{i}+h_{\mathfrak{i}-1})}
 	{h_\mathfrak{i}h_{\mathfrak{i}-1}(h_\mathfrak{i}+h_{\mathfrak{i}-1})}\right) \nonumber \\
-	&+\sum_{I\neq J}\left(\frac{1}{2}D_{\phi\phi}{}^{IJ}\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})}
-	+D_{\phi\pi}{}^I{}_J\frac{u_{i+1,\mathfrak{j}+1}-u_{i+1,\mathfrak{j}-1}-u_{i-1,\mathfrak{j}+1}+u_{i-1,\mathfrak{j}-1}}{(h_i+h_{i-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}
-	\right.\nonumber \\
+	&+\sum_{I\neq J}\left(\frac{1}{2}D_{\phi\phi}{}^{IJ}\frac{u_{i+1,j+1}-u_{i+1,j-1}-u_{i-1,j+1}+u_{i-1,j-1}}{(h_i+h_{i-1})(h_j+h_{j-1})} \right.\nonumber \\
+	&\hspace{20pt}+D_{\phi\pi}{}^I{}_J\frac{u_{i+1,\mathfrak{j}+1}-u_{i+1,\mathfrak{j}-1}-u_{i-1,\mathfrak{j}+1}+u_{i-1,\mathfrak{j}-1}}{(h_i+h_{i-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})} \nonumber \\
 	&\hspace{20pt}\left.+\frac{1}{2}D_{\pi\pi IJ}
 	\frac{u_{\mathfrak{i}+1,\mathfrak{j}+1}-u_{\mathfrak{i}+1,\mathfrak{j}-1}-u_{\mathfrak{i}-1,\mathfrak{j}+1}+u_{\mathfrak{i}-1,\mathfrak{j}-1}}
 	{(h_\mathfrak{i}+h_{\mathfrak{i}-1})(h_\mathfrak{j}+h_{\mathfrak{j}-1})}\right) \nonumber \\
@@ -298,8 +298,9 @@ For $\calC_2$, one discretizes the right side of PDE as well:
 \bae{
 	&\hspace{-20pt}-D_{\phi\phi}{}^{IJ}(\partial_{\phi^I}v)(\partial_{\phi^J}v)-2D_{\phi\pi}{}^I{}_J(\partial_{\phi^I}v)(\partial_{\pi_J}v)-D_{\pi\pi IJ}(\partial_{\pi_I}v)(\partial_{\pi_J}v) \nonumber \\
 	&\simeq-\sum_{IJ}\left[D_{\phi\phi}{}^{IJ}\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{j+1}-v_{j-1}}{h_j+h_{j-1}} 
-	+2D_{\phi\pi}{}^I{}_J\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}
-	+D_{\pi\pi IJ}\frac{v_{\mathfrak{i}+1}-v_{\mathfrak{i}-1}}{h_\mathfrak{i}+h_{\mathfrak{i}-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}\right] \nonumber \\
+	+2D_{\phi\pi}{}^I{}_J\frac{v_{i+1}-v_{i-1}}{h_i+h_{i-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}} \right.\nonumber \\
+	&\hspace{20pt}\left.+D_{\pi\pi IJ}\frac{v_{\mathfrak{i}+1}-v_{\mathfrak{i}-1}}{h_\mathfrak{i}+h_{\mathfrak{i}-1}}\frac{v_{\mathfrak{j}+1}-v_{\mathfrak{j}-1}}{h_\mathfrak{j}+h_{\mathfrak{j}-1}}
+	\right] \nonumber \\
 	&=:X.
 }
 Then PDE reads
@@ -346,7 +347,7 @@ For a numerical solver of stochastic differential equations, we use the R\"o\ss 
 
 \section{Configuration space formulation}
 
-Realistically, reducing the phase-space dimension might be the most crucial task from the view point of the computational cost in some cases 
+Practically, reducing the phase-space dimension might be the most crucial task from the view point of the computational cost in some cases 
 even at the expense of accuracy to some extent. The slow-roll approximation can halve the physical d.o.f. and often gives results practically accurate enough.
 In this section, eliminating the d.o.f. of momenta by the slow-roll approximation, we give the configuration space formulation of stochastic-$\delta N$.
 
@@ -410,7 +411,7 @@ and
 giving the discrete PDE
 \bae{
     \calM_n=\left.\frac{1}{C}(\calM_{n-1}+U)\right|_{u=\calM_n},
-    \qquad \calC_2=\left.\frac{1}{C}(U+X)\right|_{u=\calC_2,v=\calM_1}.
+    \qquad \calC_2=\left.\frac{1}{C}(U+X)\right|_{u=\calC_2,\,v=\calM_1}.
 }
 
 
@@ -433,7 +434,11 @@ giving the discrete PDE
 	\end{tabular} \\[10pt]
 	\includegraphics[width=0.5\hsize]{figs/hilltop/Pzeta_conf.pdf}
 	\caption{Our numerical results of $\braket{\calN}=\calM_1$, $\braket{\delta\calN^2}=\calC_2$, and $\calP_\zeta=\dd\braket{\delta\calN^2}/\dd\braket{\calN}$ 
-	for the hilltop model~(\ref{eq: hilltop V}) are shown by blue thick lines. The black thin line}
+	for the hilltop model~(\ref{eq: hilltop V}) are shown by blue thick lines. The end surface is determined by the condition $\epsilon_V=1$. 
+	The black thin line represents \texttt{Mathematica}'s numerical integration, while orange dotted lines
+	are the classical slow-roll formulae~(\ref{eq: classical slow-roll formulae}). In the shaded region, the stochasticity parameter 
+	$\eta_\cl=\frac{1}{24\pi^2\Mpl^4}\left|\frac{V^{\prime\prime}V^2}{{V^\prime}^2}\right|$ becomes larger than unity and the stochastic effect cannot be neglected
+	as shown by the deviation between the stochastic calculations (\texttt{StocDeltaN} or \texttt{Mathematica}) and the classical ones.}
 	\label{figs: hilltop_conf}
 \end{figure}
 
@@ -447,8 +452,8 @@ easily even in \texttt{Mathematica} ($\calC_2$ requires the result of $\calM_1$ 
 showing they are consistent. 
 When the stochasticity parameter $\eta_\cl=\frac{1}{24\pi^2\Mpl^4}\left|\frac{V^{\prime\prime}V^2}{{V^\prime}^2}\right|$ is large, 
 the stochastic sweeping effect reduces both the mean e-folds and its perturbation from the classical slow-roll predictions given by
-\bae{
-	N_\cl=\int^\phi_{\phi_\uf}\frac{\dd\phi^\prime}{\Mpl}\frac{1}{\sqrt{2\epsilon_V}}, \qquad \calP_\zeta=\frac{1}{24\pi^2\Mpl^4}{V}{\epsilon_V}, 
+\bae{\label{eq: classical slow-roll formulae}
+	N_\cl=\int^\phi_{\phi_\uf}\frac{\dd\phi^\prime}{\Mpl}\frac{1}{\sqrt{2\epsilon_V}}, \qquad \calP_\zeta=\frac{1}{24\pi^2\Mpl^4}\frac{V}{\epsilon_V}, 
 	\qquad \epsilon_V=\frac{\Mpl^2}{2}\left(\frac{V^\prime}{V}\right)^2.
 }
 In particular, the results show that the mean e-folds cannot exceed around 2500 by the sweeping effect and then the power spectrum rapidly reduces around that scale 
@@ -473,9 +478,31 @@ In particular, the results show that the mean e-folds cannot exceed around 2500 
 		\end{minipage}
 	\end{tabular} \\[10pt]
 	\includegraphics[width=0.5\hsize]{figs/inflection/Pzeta_conf.pdf}
-	\caption{}
+	\caption{Results for the inflection model~(\ref{eq: inflection V}). The end surface is $\rho_\uf=3\times(1.9\times10^{-5})^2\Mpl^4$. 
+	The orange dashed line represents the result in the full (Mukhanov-Sasaki) linear perturbation theory,
+	while the green dotted line corresponds with the classical slow-roll approximation~(\ref{eq: classical slow-roll formulae}) though the dynamics of $\epsilon_V$ itself is
+	calculated without the slow-roll approximation.}
 	\label{figs: inflection_conf}
 \end{figure}
+
+Let us see the model beyond the slow-roll approximation, that is, the ultra-slow-roll inflection model~\cite{Garcia-Bellido:2017mdw,Ezquiaga:2018gbw}:
+\bae{\label{eq: inflection V}
+	V=\frac{V_0}{12}\frac{6m^2\phi^2-4\alpha\phi^3+3\lambda\phi^4}{(1+\xi\phi^2)^2},
+}
+where the parameters are chosen so that the potential has very flat inflection point at the critical point $\phi_c=0.66$ as,
+\bae{
+	V_0=10^{-7}, \qquad \lambda=1, \qquad \xi=2.3, \qquad \alpha=\frac{6\lambda\phi_c}{3+\xi^2\phi_c^4}, \qquad m^2=\frac{\lambda\phi_c^2(3+\xi\phi_c^2)}{3+\xi^2\phi_c^4},
+}
+in the Planck unit $\Mpl=1$.
+
+As studied in Ref.~\cite{Garcia-Bellido:2017mdw}, while the dynamics is well described by the slow-roll attractor solution sufficiently before the critical point,
+the potential tilt rapidly reduces around $\phi_c$ and the inflaton momentum estimated by the slow-roll approximation becomes much smaller than the true value,
+meaning the violation of the slow-roll approximation known as the ultra-slow-roll case.
+
+\texttt{StocDeltaN}'s results are summarized in Fig.~\ref{figs: inflection_conf}, compared with those in the textbook approaches.
+Since we employ the slow-roll EoM in this section, the stochastic-$\delta N$ formalism cannot follow the rapid change of the potential tilt but instead
+shows a broad peak. That is, the full phase-space formulation is required in this case.
+
 
 
 
@@ -494,17 +521,21 @@ In particular, the results show that the mean e-folds cannot exceed around 2500 
 		\end{minipage}
 	\end{tabular} \\[10pt]
 	\includegraphics[width=0.5\hsize]{figs/double_chaotic/Pzeta_conf.pdf}
-	\caption{}
+	\caption{Double mass-term model described by (\ref{eq: double chaotic V}). The end surface is $\rho_\uf=m_\psi^2$.
+	The red lines in the upper two figures shows one sample trajectory started from $\phi_\ui=\psi_\ui=13\Mpl$. The power spectrum of curvature perturbations
+	shown in the lower figure is calculated around such trajectories.}
 	\label{figs: double_chaotic_conf}
 \end{figure}
 
 As a first simple example of multi-field models, let us here consider the double mass-term model whose potential is given by
-\bae{
+\bae{\label{eq: double chaotic V}
 	V=\frac{1}{2}M^2\phi^2+\frac{1}{2}m^2\psi^2, \qquad M=9m=10^{-5}\Mpl,
 }
 with the canonical field-space metric $G_{IJ}=\diag(1,1)$. The result is shown in Fig.~\ref{figs: double_chaotic_conf}.
-In this setup, the stochasticity of the considered region is small and the stochastic-$\delta N$ formalism well reproduces the results of the linear perturbation (Mukhanov-Sasaki) theory 
+In this setup, the stochasticity of the considered region is small and the stochastic-$\delta N$ formalism well reproduces
+the results of the linear perturbation (Mukhanov-Sasaki) theory 
 except for slight differences around the turning point expected to be due to the slow-roll approximation.
+This example indicates that our numerical code is useful even for models where the stochastic effect is not significant.
 
 
 
@@ -523,9 +554,40 @@ except for slight differences around the turning point expected to be due to the
 		\end{minipage}
 	\end{tabular} \\[10pt]
 	\includegraphics[width=0.5\hsize]{figs/hybrid/Pzeta_conf.pdf}
-	\caption{}
+	\caption{Hybrid inflation model (\ref{eq: hybrid V}). The black dotted line in the top-left figure represents the end surface $\rho_\uf=2.074038\times10^{-16}\Mpl^4$.
+	The orange dotted line in the lower figure represents the semi-classical formula (\ref{eq: CG formula}) by Clesse \& Garc\'ia-Bellido~\cite{Clesse:2015wea}.}
 	\label{figs: hybrid_conf}
 \end{figure}
+
+The true powerfulness of our code becomes clear for models where the stochastic correction is necessary, e.g. the critical point of hybrid inflation~\cite{Kawasaki:2015ppx}:
+\bae{\label{eq: hybrid V}
+	V=\Lambda^4\left[\left(1-\frac{\psi^2}{M^2}\right)^2+2\frac{\phi^2\psi^2}{\phi_c^2M^2}+\frac{\phi-\phi_c}{\mu_1}-\frac{(\phi-\phi_c)^2}{\mu_2^2}\right],
+}
+where
+\bae{
+	M=0.1, \qquad \phi_c=0.1\sqrt{2}, \qquad \mu_1=\frac{50}{M^2\phi_c}, \qquad \mu_2=11, \qquad \Lambda=2.189\times10^{-9}\times\frac{12\pi^2}{\mu_1^2},
+}
+in the Planck unit $\Mpl=1$. Clesse \& Garc\'ia-Bellido derived a semi-classical formula for this model as~\cite{Clesse:2015wea}
+\bae{\label{eq: CG formula}
+	\calP_{\zeta,\text{CG}}(k)=\frac{\Lambda^4M^2\phi_c\mu_1}{192\pi^2\Mpl^2\chi_2\psi_k^2},
+}
+where
+\bae{
+	\psi_k=\psi_0\ee^{\chi_k}, \qquad \chi_k=\frac{4\phi_c\mu_1\xi_k^2}{M^2}, \qquad \xi_k=\frac{(N_k-N_\text{water})\Mpl^2}{\mu_1\phi_c},
+}
+for the mode $k=k_\uf\ee^{-N_k}$ with
+\bae{
+	\psi_0&=\left(\frac{\sqrt{2}\Lambda^4M\phi_c^{1/2}\mu_1^{1/2}}{96\pi^{3/2}\Mpl^4}\right)^{1/2}, \qquad 
+	N_\text{water}=\left(\frac{\sqrt{\chi_2}}{2}+\frac{1}{4\sqrt{\chi_2}}\right)\frac{M\phi_c^{1/2}\mu_1^{1/2}}{\Mpl^2}, \nonumber \\
+	\chi_2&=\log\left(\frac{\phi_c^{1/2}M}{2\mu_1^{1/2}\psi_0}\right).
+}
+As the previous calculation in Ref.~\cite{Kawasaki:2015ppx}, the stochastic-$\delta N$ formalism gives results qualitatively consistent with this formula, 
+shown in Fig.~\ref{figs: hybrid_conf}. Particularly, our \texttt{StocDeltaN} reproduces not only the peak spectrum but also the flat one at the valley phase 
+$\braket{\calN}\gtrsim20$, while the previous calculation is dominated by large sampling noises.
+
+
+
+
 
 
 \subsubsection{GeoDesI}
