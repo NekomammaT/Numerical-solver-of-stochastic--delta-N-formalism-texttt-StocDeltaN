@@ -1,4 +1,4 @@
-% !TEX TS-program = xelatex
+% !TEX TS-program = xelatex%
 
 \documentclass[aps, prd
 , preprint
@@ -37,10 +37,10 @@
 ,pdfa=true
 ]{hyperref}
 
-\usepackage{mathpazo}
-\usepackage[no-math]{fontspec}
-\setmainfont{Palatino}
-\setsansfont{Optima}
+%\usepackage{mathpazo}
+%\usepackage[no-math]{fontspec}
+%\setmainfont{Palatino}
+%\setsansfont{Optima}
 
 \newcommand{\dif}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 \newcommand{\pdif}[2]{\frac{\partial #1}{\partial #2}}
@@ -291,7 +291,7 @@ Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (
 }
 Therefore PDE for $\calM_n$ reads
 \bae{\label{eq: discrete PDE for fn}
-	\calM_n=\left.\frac{1}{C}(\calM_{n-1}+U)\right|_{u=\calM_n}.
+	\calM_n=\left.\frac{1}{C}(-n\calM_{n-1}+U)\right|_{u=\calM_n}.
 }
 Note that the right side is calculated only by the nearest sites but irrespective of the considered site itself, that is, this equation is explicit.
 For $\calC_2$, one discretizes the right side of PDE as well:
