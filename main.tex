@@ -219,9 +219,9 @@ and $\calL^\dagger_\FP$ denotes the adjoint FP operator
 
 \bfe{width=\hsize}{figs/lattice.pdf}{}{fig: lattice}
 
-In this subsubsection, we describe the numerical algorithm to solve PDE implemented in \texttt{JacobiPDE.hpp}.
+In this subsubsection, we describe the numerical algorithm to solve PDE implemented in \texttt{JacobiPDE.cpp}.
 To solve PDE numerically, one divides the integration region $\Omega$ into the lattice as schematically indicated in Fig.~\ref{fig: lattice}.
-In \texttt{JacobiPDE.hpp}, the Jacobi method is used, where the site value is updated by the nearest eight sites for e.g. 2-dim. case and its own self.
+In \texttt{JacobiPDE.cpp}, the Jacobi method is used, where the site value is updated by the nearest eight sites for e.g. 2-dim. case and its own self.
 
 First let us specify the boundary condition. To make use of the $\delta N$ formalism, the surface of the end of inflation should be given by the constant energy slice.
 Therefore, with a certain threshold energy $\rho_c$, the boundary condition is set as
@@ -333,7 +333,7 @@ For a numerical solver of stochastic differential equations, we use the R\"o\ss 
 
 \begin{itemize}
 \item Explanation of the stochastic-$\delta N$ formalism.
-\item User's manual for \texttt{StocDeltaN.hpp}.
+\item User's manual for \texttt{StocDeltaN.cpp}.
 \end{itemize}
 
 
