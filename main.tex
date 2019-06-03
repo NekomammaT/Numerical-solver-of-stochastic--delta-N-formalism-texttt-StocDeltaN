@@ -258,7 +258,7 @@ The second derivatives are, depending on if the direction is the same or not, re
 }
 Regarding the discretization of the first derivative, one recalls that the physically fixed boundary is the EoI surface and field values should be calculated 
 from this surface. Therefore the discretization is chosen so that the lower-energy point is used, that is, $u_{i+1}$ if $D^I_\phi>0$ and otherwise $u_{i-1}$ is selected.
-Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (and similarly for $\pi$). Then the adjoint FP operator is discretized as
+Let us label the points where $D_\phi^I>0$ as $i_+$ and $i_-$ for other points (and similarly for $\pi$). Then the adjoint FP operator is discretized as (\Blue{TBC})
 \bae{
 	&\hspace{-20pt}\calL_\FP^\dagger\cdot u \nonumber \\
 	\simeq&\sum_{i_+}D_\phi^I\frac{u_{i_++1}-u}{h_{i_+}}+\sum_{j_-}D_\phi^J\frac{u-u_{j_--1}}{h_{j_--1}}
